@@ -36,7 +36,7 @@ proxy-group-anchors:
   # Common url-test settings
   url-test-base: &url-test-base
     type: url-test
-    url: http://www.gstatic.com/generate_204
+    url: https://www.gstatic.com/generate_204
     interval: 300
     tolerance: 50
     lazy: true
@@ -111,7 +111,7 @@ proxy-groups:
 
   - name: TW
     <<: *url-test-base
-    filter: "(?i)🇹🇼|🇨🇳|台[湾灣]|Taiwan|TW"
+    filter: "(?i)🇹🇼|台[湾灣]|Taiwan|TW(?!itch)"
 
   - name: JP
     <<: *url-test-base
@@ -130,7 +130,7 @@ proxy-groups:
     type: select
     include-all: true
     exclude-type: direct
-    exclude-filter: "(?i)🇭🇰|🇹🇼|🇨🇳|🇯🇵|🇸🇬|🇺🇸|香港|台[湾灣]|日本|新加坡|美[国國]|HK|Hong|TW|Taiwan|JP|Japan|SG|Singapore|US|States|America|Expire|Traffic|流量|到期|剩余"
+    exclude-filter: "(?i)🇭🇰|🇹🇼|🇯🇵|🇸🇬|🇺🇸|香港|台[湾灣]|日本|新加坡|美[国國]|HK|Hong|TW(?!itch)|Taiwan|JP|Japan|SG|Singapore|US|States|America|Expire|Traffic|流量|到期|剩余"
 
 # Rule provider base configurations (YAML anchors for DRY principle)
 rule-provider-base:
