@@ -59,11 +59,11 @@ const dnsConfig = {
   // 系统默认 DNS（可改为运营商或本地网络更可靠的 DNS，如校园网/家庭宽带 DNS）
   "default-nameserver": ["223.5.5.5", "1.2.4.8"], // 可修改成自己 ISP 的 DNS
   // 常规解析使用的服务器（此处设置为国外 DoH，结合 respect-rules 与策略进行分流）
-  nameserver: [...foreignNameservers],
+  nameserver: foreignNameservers,
   // 代理服务器自身的域名解析（代理节点域名解析走国内，提高连接速度与稳定性）
-  "proxy-server-nameserver": [...domesticNameservers],
+  "proxy-server-nameserver": domesticNameservers,
   // 直连目标的域名解析（直连流量走国内 DNS，避免被境外解析带来的绕路）
-  "direct-nameserver": [...domesticNameservers],
+  "direct-nameserver": domesticNameservers,
   // 域名策略：为特定域分类指定解析服务器（如 CN/私有网走国内 DNS）
   "nameserver-policy": {
     // geosite:private,cn 表示私有网络与中国大陆域名
@@ -100,7 +100,7 @@ function main(config) {
 
   // 排除名称中含有 "Premium" 的节点，并为保留的节点设置 udp = true
   // 说明：部分机场将「Premium」标注为特殊套餐或不可用节点，过滤可避免误用
-  removeNodeByName(config, /Premium/g);
+  removeNodeByName(config, /Premium/);
 
   // 返回修改后的配置对象
   return config;
@@ -113,28 +113,27 @@ function main(config) {
 // - 在保留的节点上统一开启 UDP（对需要 UDP 的服务如某些游戏/通讯工具有帮助）
 function removeNodeByName(config, regExp) {
   // 处理代理节点列表（proxies）
-  if (config.proxies && Array.isArray(config.proxies)) {
-    config.proxies = config.proxies.filter(proxy => {
-      // 为保留的节点设置 UDP（即便稍后被过滤，逻辑也无副作用）
+  const proxies = config.proxies;
+  if (Array.isArray(proxies) && proxies.length > 0) {
+    // 为所有有效节点设置 UDP
+    for (const proxy of proxies) {
       if (proxy && typeof proxy === 'object' && proxy.name) {
-        // 为符合条件的代理节点设置 udp 为 true
-        // 注：Clash 节点的 udp 字段决定是否允许 UDP 转发
         proxy.udp = true;
       }
-      // 过滤掉名称匹配正则的节点（如包含 "Premium"）
-      return !proxy.name.match(regExp);
-    });
+    }
+    // 过滤掉名称匹配正则的节点（使用 test() 比 match() 更高效）
+    config.proxies = proxies.filter(proxy => proxy.name && !regExp.test(proxy.name));
   }
 
   // 同步更新代理组（proxy-groups）中的显式代理名单
-  if (config['proxy-groups'] && Array.isArray(config['proxy-groups'])) {
-    config['proxy-groups'] = config['proxy-groups'].map(group => {
-      if (group.proxies && Array.isArray(group.proxies)) {
-        // 从每个组的 proxies 列表中移除匹配名称的引用
-        group.proxies = group.proxies.filter(name => !name.match(regExp));
+  const proxyGroups = config['proxy-groups'];
+  if (Array.isArray(proxyGroups) && proxyGroups.length > 0) {
+    for (const group of proxyGroups) {
+      if (Array.isArray(group.proxies) && group.proxies.length > 0) {
+        // 从每个组的 proxies 列表中移除匹配名称的引用（使用 test() 比 match() 更高效）
+        group.proxies = group.proxies.filter(name => name && !regExp.test(name));
       }
-      return group;
-    });
+    }
   }
 
   // 返回更新后的配置对象
