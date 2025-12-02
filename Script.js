@@ -122,7 +122,7 @@ function removeNodeByName(config, regExp) {
       }
     }
     // 过滤掉名称匹配正则的节点（使用 test() 比 match() 更高效）
-    config.proxies = proxies.filter(proxy => !regExp.test(proxy.name));
+    config.proxies = proxies.filter(proxy => proxy.name && !regExp.test(proxy.name));
   }
 
   // 同步更新代理组（proxy-groups）中的显式代理名单
@@ -131,7 +131,7 @@ function removeNodeByName(config, regExp) {
     for (const group of proxyGroups) {
       if (Array.isArray(group.proxies) && group.proxies.length > 0) {
         // 从每个组的 proxies 列表中移除匹配名称的引用（使用 test() 比 match() 更高效）
-        group.proxies = group.proxies.filter(name => !regExp.test(name));
+        group.proxies = group.proxies.filter(name => name && !regExp.test(name));
       }
     }
   }
