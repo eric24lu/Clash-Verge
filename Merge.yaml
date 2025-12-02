@@ -13,7 +13,7 @@ proxy-groups:
     type: select
     include-all: true
     exclude-type: direct
-#   filter: ^((?!(Expire)).)*$
+    filter: ^((?!(Expire)).)*$
 
   - name: Proxy
     type: select
@@ -29,46 +29,6 @@ proxy-groups:
     type: select
     proxies:
       - DIRECT
-      - HK
-      - TW
-      - JP
-      - SG
-      - US
-      - WW
-
-  - name: Social
-    type: select
-    proxies:
-      - HK
-      - TW
-      - JP
-      - SG
-      - US
-      - WW
-
-  - name: YouTube
-    type: select
-    proxies:
-      - HK
-      - TW
-      - JP
-      - SG
-      - US
-      - WW
-
-  - name: Netflix
-    type: select
-    proxies:
-      - HK
-      - TW
-      - JP
-      - SG
-      - US
-      - WW
-
-  - name: Telegram
-    type: select
-    proxies:
       - HK
       - TW
       - JP
@@ -108,14 +68,37 @@ proxy-groups:
       - US
       - WW
 
-  - name: Bilibili
+  - name: Telegram
     type: select
     proxies:
-      - DIRECT
       - HK
       - TW
+      - JP
+      - SG
+      - US
+      - WW
 
-  - name: Steam
+  - name: YouTube
+    type: select
+    proxies:
+      - HK
+      - TW
+      - JP
+      - SG
+      - US
+      - WW
+
+  - name: Netflix
+    type: select
+    proxies:
+      - HK
+      - TW
+      - JP
+      - SG
+      - US
+      - WW
+
+  - name: Gaming
     type: select
     proxies:
       - DIRECT
@@ -125,6 +108,23 @@ proxy-groups:
       - SG
       - US
       - WW
+
+  - name: Social
+    type: select
+    proxies:
+      - HK
+      - TW
+      - JP
+      - SG
+      - US
+      - WW
+
+  - name: Bilibili
+    type: select
+    proxies:
+      - DIRECT
+      - HK
+      - TW
 
   - name: Final
     type: select
@@ -315,7 +315,7 @@ rule-providers:
   steamlist:
     type: http
     behavior: classical
-    url: "https://raw.githubusercontent.com/Er1cID/SteamList/main/Steamlist.yaml"
+    url: "https://raw.githubusercontent.com/eric24lu/Clash-Verge/main/Steamlist.yaml"
     path: ./ruleset/steamlist.yaml
     interval: 86400
 
@@ -406,29 +406,23 @@ rule-providers:
   pikpak:
     type: http
     behavior: classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/PikPak/PikPak.yaml"
+    url: "https://raw.githubusercontent.com/eric24lu/ios_rule_script/master/rule/Clash/PikPak/PikPak.yaml"
     path: ./ruleset/pikpak.yaml
     interval: 86400
 
 rules:
-  - PROCESS-NAME,v2ray,DIRECT
-  - PROCESS-NAME,Surge%203,DIRECT
-  - PROCESS-NAME,ss-local,DIRECT
-  - PROCESS-NAME,privoxy,DIRECT
-  - PROCESS-NAME,trojan,DIRECT
-  - PROCESS-NAME,trojan-go,DIRECT
-  - PROCESS-NAME,naive,DIRECT
-  - PROCESS-NAME,Thunder,DIRECT
-  - PROCESS-NAME,DownloadService,DIRECT
-  - PROCESS-NAME,qBittorrent,DIRECT
-  - PROCESS-NAME,Transmission,DIRECT
-  - PROCESS-NAME,fdm,DIRECT
-  - PROCESS-NAME,aria2c,DIRECT
-  - PROCESS-NAME,Folx,DIRECT
-  - PROCESS-NAME,NetTransport,DIRECT
-  - PROCESS-NAME,uTorrent,DIRECT
-  - PROCESS-NAME,WebTorrent,DIRECT
-  - DOMAIN-KEYWORD,tuba.cc,DIRECT
+  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+  - IP-CIDR,169.254.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,224.0.0.0/4,DIRECT,no-resolve
+  - DST-PORT,5353,DIRECT
+  - DST-PORT,62078,DIRECT
+  - PROCESS-NAME,AppleMobileDeviceService.exe,DIRECT
+  - PROCESS-NAME,iTunes.exe,DIRECT
+  - PROCESS-NAME,iCloud.exe,DIRECT
+  - PROCESS-NAME,Sideloadly.exe,DIRECT
+  - PROCESS-NAME,iMazing.exe,DIRECT
   - RULE-SET,lancidr,DIRECT,no-resolve
   - RULE-SET,cncidr,DIRECT,no-resolve
   - RULE-SET,applications,DIRECT
@@ -438,25 +432,25 @@ rules:
   - RULE-SET,apple,DIRECT
   - RULE-SET,youtube,YouTube
   - RULE-SET,google,Google
-  - RULE-SET,copilot,US
-  - RULE-SET,onedrive,HK
+  - RULE-SET,onedrive,SG
   - RULE-SET,microsoft,Microsoft
   - RULE-SET,telegram,Telegram,no-resolve
   - RULE-SET,reddit,Social
   - RULE-SET,instagram,Social
   - RULE-SET,facebook,Social
-  - RULE-SET,steam,Steam
-  - RULE-SET,steamlist,Steam
+  - RULE-SET,steam,Gaming
+  - RULE-SET,steamlist,Gaming
   - RULE-SET,netflix,Netflix
   - RULE-SET,netflixcidr,Netflix,no-resolve
   - RULE-SET,tiktok,Proxy
   - RULE-SET,twitch,Proxy
   - RULE-SET,speedtest,Speedtest
   - RULE-SET,openai,US
-  - RULE-SET,claude,US  
+  - RULE-SET,claude,US
+  - RULE-SET,copilot,US
   - RULE-SET,github,US
   - RULE-SET,bahamut,TW
-  - RULE-SET,pikpak,HK
+  - RULE-SET,pikpak,SG
   - RULE-SET,gfw,Proxy
   - RULE-SET,tld-not-cn,Proxy
   - RULE-SET,proxy,Proxy
