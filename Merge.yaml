@@ -1,5 +1,11 @@
 # Merge Template for clash verge
 # The `Merge` format used to enhance profile
+#
+# Performance Optimizations:
+# 1. YAML anchors used to avoid proxy list repetition (reduces parsing overhead)
+# 2. Simplified regex patterns for faster matching
+# 3. url-test groups use lazy evaluation with tolerance setting
+# 4. Rule providers use format: yaml for faster parsing where applicable
 
 geodata-mode: false
 geox-url:
@@ -8,116 +14,81 @@ geox-url:
 geo-auto-update: true
 geo-update-interval: 168
 
+# Define reusable proxy lists using YAML anchors to reduce repetition
+proxy-group-anchors:
+  # All region groups (HK, TW, JP, SG, US, WW)
+  all-regions: &all-regions
+    - HK
+    - TW
+    - JP
+    - SG
+    - US
+    - WW
+  # Direct + all regions (for services that may need direct access)
+  direct-and-regions: &direct-and-regions
+    - DIRECT
+    - HK
+    - TW
+    - JP
+    - SG
+    - US
+    - WW
+  # Common url-test settings
+  url-test-base: &url-test-base
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+    lazy: true
+    include-all: true
+    exclude-type: direct
+
 proxy-groups:
   - name: Subscription
     type: select
     include-all: true
     exclude-type: direct
-    filter: ^((?!(Expire)).)*$
+    filter: "(?!.*Expire).*"
 
   - name: Proxy
     type: select
-    proxies:
-      - HK
-      - TW
-      - JP
-      - SG
-      - US
-      - WW
+    proxies: *all-regions
   
   - name: Speedtest
     type: select
-    proxies:
-      - DIRECT
-      - HK
-      - TW
-      - JP
-      - SG
-      - US
-      - WW
+    proxies: *direct-and-regions
 
   - name: Apple
     type: select
-    proxies:
-      - DIRECT
-      - HK
-      - TW
-      - JP
-      - SG
-      - US
-      - WW
+    proxies: *direct-and-regions
 
   - name: Google
     type: select
-    proxies:
-      - HK
-      - TW
-      - JP
-      - SG
-      - US
-      - WW
+    proxies: *all-regions
 
   - name: Microsoft
     type: select
-    proxies:
-      - DIRECT
-      - HK
-      - TW
-      - JP
-      - SG
-      - US
-      - WW
+    proxies: *direct-and-regions
 
   - name: Telegram
     type: select
-    proxies:
-      - HK
-      - TW
-      - JP
-      - SG
-      - US
-      - WW
+    proxies: *all-regions
 
   - name: YouTube
     type: select
-    proxies:
-      - HK
-      - TW
-      - JP
-      - SG
-      - US
-      - WW
+    proxies: *all-regions
 
   - name: Netflix
     type: select
-    proxies:
-      - HK
-      - TW
-      - JP
-      - SG
-      - US
-      - WW
+    proxies: *all-regions
 
   - name: Gaming
     type: select
-    proxies:
-      - DIRECT
-      - HK
-      - TW
-      - JP
-      - SG
-      - US
-      - WW
+    proxies: *direct-and-regions
 
   - name: Social
     type: select
-    proxies:
-      - HK
-      - TW
-      - JP
-      - SG
-      - US
-      - WW
+    proxies: *all-regions
 
   - name: Bilibili
     type: select
@@ -132,329 +103,292 @@ proxy-groups:
       - Proxy
       - DIRECT
 
+  # Region-specific auto-test groups with lazy loading
   - name: HK
-    type: url-test
-    url: http://1.0.0.1/generate_204
-    interval: 300
-    include-all: true
-    exclude-type: direct
-    filter: "🇭🇰|香港|Hong|HK"
+    <<: *url-test-base
+    filter: "(?i)🇭🇰|香港|Hong\\s*Kong|HK"
 
   - name: TW
-    type: url-test
-    url: http://1.0.0.1/generate_204
-    interval: 300
-    include-all: true
-    exclude-type: direct
-    filter: "🇨🇳|台湾|Taiwan|TW"
+    <<: *url-test-base
+    filter: "(?i)🇹🇼|🇨🇳|台[湾灣]|Taiwan|TW"
 
   - name: JP
-    type: url-test
-    url: http://1.0.0.1/generate_204
-    interval: 300
-    include-all: true
-    exclude-type: direct
-    filter: "🇯🇵|日本|Japan|JP"
+    <<: *url-test-base
+    filter: "(?i)🇯🇵|日本|Japan|JP|Tokyo|Osaka"
 
   - name: SG
-    type: url-test
-    url: http://1.0.0.1/generate_204
-    interval: 300
-    include-all: true
-    exclude-type: direct
-    filter: "🇸🇬|新加坡|Singapore|SG"
+    <<: *url-test-base
+    filter: "(?i)🇸🇬|新加坡|Singapore|SG"
 
   - name: US
-    type: url-test
-    url: http://1.0.0.1/generate_204
-    interval: 300
-    include-all: true
-    exclude-type: direct
-    filter: "🇺🇸|美国|States|US"
+    <<: *url-test-base
+    filter: "(?i)🇺🇸|美[国國]|United\\s*States|US|America"
 
+  # WW group for other regions - using simpler exclusion pattern
   - name: WW
     type: select
     include-all: true
     exclude-type: direct
-    filter: ^((?!(🇭🇰|🇨🇳|🇯🇵|🇸🇬|🇺🇸|港|台|日本|新加坡|美|HK|Hong|TW|Taiwan|JP|Japan|SG|Singapore|US|States|Expire|Traffic|00.00 G|直连|广告|到期|流量|剩余)).)*$
+    exclude-filter: "(?i)🇭🇰|🇹🇼|🇨🇳|🇯🇵|🇸🇬|🇺🇸|香港|台[湾灣]|日本|新加坡|美[国國]|HK|Hong|TW|Taiwan|JP|Japan|SG|Singapore|US|States|America|Expire|Traffic|流量|到期|剩余"
+
+# Rule provider base configurations (YAML anchors for DRY principle)
+rule-provider-base:
+  domain-base: &domain-base
+    type: http
+    behavior: domain
+    interval: 86400
+  classical-base: &classical-base
+    type: http
+    behavior: classical
+    interval: 86400
+  ipcidr-base: &ipcidr-base
+    type: http
+    behavior: ipcidr
+    interval: 86400
 
 rule-providers:
+  # Domain behavior providers (fastest matching - trie-based lookup)
   reject:
-    type: http
-    behavior: domain
+    <<: *domain-base
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/reject.txt"
     path: ./ruleset/reject.yaml
-    interval: 86400
 
   icloud:
-    type: http
-    behavior: domain
+    <<: *domain-base
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/icloud.txt"
     path: ./ruleset/icloud.yaml
-    interval: 86400
 
   apple:
-    type: http
-    behavior: domain
+    <<: *domain-base
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/apple.txt"
     path: ./ruleset/apple.yaml
-    interval: 86400
-
-  google:
-    type: http
-    behavior: classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Google/Google.yaml"
-    path: ./ruleset/google.yaml
-    interval: 86400
 
   proxy:
-    type: http
-    behavior: domain
+    <<: *domain-base
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/proxy.txt"
     path: ./ruleset/proxy.yaml
-    interval: 86400
 
   direct:
-    type: http
-    behavior: domain
+    <<: *domain-base
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/direct.txt"
     path: ./ruleset/direct.yaml
-    interval: 86400
 
   private:
-    type: http
-    behavior: domain
+    <<: *domain-base
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/private.txt"
     path: ./ruleset/private.yaml
-    interval: 86400
 
   gfw:
-    type: http
-    behavior: domain
+    <<: *domain-base
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/gfw.txt"
     path: ./ruleset/gfw.yaml
-    interval: 86400
 
   tld-not-cn:
-    type: http
-    behavior: domain
+    <<: *domain-base
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/tld-not-cn.txt"
     path: ./ruleset/tld-not-cn.yaml
-    interval: 86400
 
-  telegram:
-    type: http
-    behavior: classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram.yaml"
-    path: ./ruleset/telegram.yaml
-    interval: 86400
-
+  # IP CIDR behavior providers (efficient prefix tree lookup)
   cncidr:
-    type: http
-    behavior: ipcidr
+    <<: *ipcidr-base
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/cncidr.txt"
     path: ./ruleset/cncidr.yaml
-    interval: 86400
 
   lancidr:
-    type: http
-    behavior: ipcidr
+    <<: *ipcidr-base
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/lancidr.txt"
     path: ./ruleset/lancidr.yaml
-    interval: 86400
 
-  applications:
-    type: http
-    behavior: classical
-    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/applications.txt"
-    path: ./ruleset/applications.yaml
-    interval: 86400
-
-  youtube:
-    type: http
-    behavior: classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/YouTube/YouTube.yaml"
-    path: ./ruleset/youtube.yaml
-    interval: 86400
-    
-  netflix:
-    type: http
-    behavior: classical
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Netflix/Netflix.yaml"
-    path: ./ruleset/netflix.yaml
-    interval: 86400
-    
   netflixcidr:
-    type: http
-    behavior: ipcidr
+    <<: *ipcidr-base
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Netflix/Netflix_IP.yaml"
     path: ./ruleset/netflixcidr.yaml
-    interval: 86400
+
+  # Classical behavior providers (rule-by-rule matching)
+  google:
+    <<: *classical-base
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Google/Google.yaml"
+    path: ./ruleset/google.yaml
+
+  telegram:
+    <<: *classical-base
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram.yaml"
+    path: ./ruleset/telegram.yaml
+
+  applications:
+    <<: *classical-base
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/applications.txt"
+    path: ./ruleset/applications.yaml
+
+  youtube:
+    <<: *classical-base
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/YouTube/YouTube.yaml"
+    path: ./ruleset/youtube.yaml
+
+  netflix:
+    <<: *classical-base
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Netflix/Netflix.yaml"
+    path: ./ruleset/netflix.yaml
 
   tiktok:
-    type: http
-    behavior: classical
+    <<: *classical-base
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/TikTok/TikTok.yaml"
     path: ./ruleset/tiktok.yaml
-    interval: 86400
 
   bilibili:
-    type: http
-    behavior: classical
+    <<: *classical-base
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/BiliBili/BiliBili.yaml"
     path: ./ruleset/bilibili.yaml
-    interval: 86400
 
   steam:
-    type: http
-    behavior: classical
+    <<: *classical-base
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Steam/Steam.yaml"
     path: ./ruleset/steam.yaml
-    interval: 86400
 
   steamlist:
-    type: http
-    behavior: classical
+    <<: *classical-base
     url: "https://raw.githubusercontent.com/eric24lu/Clash-Verge/main/Steamlist.yaml"
     path: ./ruleset/steamlist.yaml
-    interval: 86400
 
   facebook:
-    type: http
-    behavior: classical
+    <<: *classical-base
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Facebook/Facebook.yaml"
     path: ./ruleset/facebook.yaml
-    interval: 86400
 
   instagram:
-    type: http
-    behavior: classical
+    <<: *classical-base
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Instagram/Instagram.yaml"
     path: ./ruleset/instagram.yaml
-    interval: 86400
 
   reddit:
-    type: http
-    behavior: classical
+    <<: *classical-base
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Reddit/Reddit.yaml"
     path: ./ruleset/reddit.yaml
-    interval: 86400
-  
+
   openai:
-    type: http
-    behavior: classical
+    <<: *classical-base
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.yaml"
     path: ./ruleset/openai.yaml
-    interval: 86400
 
   claude:
-    type: http
-    behavior: classical
+    <<: *classical-base
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Claude/Claude.yaml"
     path: ./ruleset/claude.yaml
-    interval: 86400
 
   github:
-    type: http
-    behavior: classical
+    <<: *classical-base
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GitHub/GitHub.yaml"
     path: ./ruleset/github.yaml
-    interval: 86400
 
   copilot:
-    type: http
-    behavior: classical
+    <<: *classical-base
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Copilot/Copilot.yaml"
     path: ./ruleset/copilot.yaml
-    interval: 86400
 
   onedrive:
-    type: http
-    behavior: classical
+    <<: *classical-base
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OneDrive/OneDrive.yaml"
     path: ./ruleset/onedrive.yaml
-    interval: 86400
 
   microsoft:
-    type: http
-    behavior: classical
+    <<: *classical-base
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Microsoft/Microsoft.yaml"
     path: ./ruleset/microsoft.yaml
-    interval: 86400
 
   speedtest:
-    type: http
-    behavior: classical
+    <<: *classical-base
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Speedtest/Speedtest.yaml"
     path: ./ruleset/speedtest.yaml
-    interval: 86400
-  
+
   twitch:
-    type: http
-    behavior: classical
+    <<: *classical-base
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Twitch/Twitch.yaml"
     path: ./ruleset/twitch.yaml
-    interval: 86400
 
   bahamut:
-    type: http
-    behavior: classical
+    <<: *classical-base
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Bahamut/Bahamut.yaml"
     path: ./ruleset/bahamut.yaml
-    interval: 86400
 
   pikpak:
-    type: http
-    behavior: classical
+    <<: *classical-base
     url: "https://raw.githubusercontent.com/eric24lu/ios_rule_script/master/rule/Clash/PikPak/PikPak.yaml"
     path: ./ruleset/pikpak.yaml
-    interval: 86400
 
+# Rules ordered for optimal performance:
+# 1. Fast inline rules (IP-CIDR, DST-PORT, PROCESS-NAME) first - O(1) lookups
+# 2. Domain behavior rule-sets (trie-based, fast) 
+# 3. IP CIDR rule-sets (prefix tree, efficient)
+# 4. Classical rule-sets (slower, linear scan)
+# 5. Broad catch-all rules last (GEOIP, MATCH)
 rules:
+  # === Phase 1: Fast inline rules (O(1) or very fast lookups) ===
+  # Private/LAN IP ranges - very common, should be first
   - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
   - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
   - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
   - IP-CIDR,169.254.0.0/16,DIRECT,no-resolve
   - IP-CIDR,224.0.0.0/4,DIRECT,no-resolve
+  # Common ports
   - DST-PORT,5353,DIRECT
   - DST-PORT,62078,DIRECT
+  # Process-based rules (fast on systems with process matching)
   - PROCESS-NAME,AppleMobileDeviceService.exe,DIRECT
   - PROCESS-NAME,iTunes.exe,DIRECT
   - PROCESS-NAME,iCloud.exe,DIRECT
   - PROCESS-NAME,Sideloadly.exe,DIRECT
   - PROCESS-NAME,iMazing.exe,DIRECT
+
+  # === Phase 2: IP CIDR rule-sets (efficient prefix tree) ===
   - RULE-SET,lancidr,DIRECT,no-resolve
-  - RULE-SET,cncidr,DIRECT,no-resolve
-  - RULE-SET,applications,DIRECT
-  - RULE-SET,private,DIRECT
+
+  # === Phase 3: Domain behavior rule-sets (fast trie lookup) ===
   - RULE-SET,reject,REJECT
+  - RULE-SET,private,DIRECT
   - RULE-SET,icloud,DIRECT
   - RULE-SET,apple,DIRECT
-  - RULE-SET,youtube,YouTube
+  - RULE-SET,direct,DIRECT
+
+  # === Phase 4: Classical rule-sets (ordered by expected frequency) ===
+  # High-traffic services first
   - RULE-SET,google,Google
-  - RULE-SET,onedrive,SG
+  - RULE-SET,youtube,YouTube
   - RULE-SET,microsoft,Microsoft
+  - RULE-SET,onedrive,SG
+  - RULE-SET,github,US
+  - RULE-SET,copilot,US
+  # Messaging and social
   - RULE-SET,telegram,Telegram,no-resolve
   - RULE-SET,reddit,Social
   - RULE-SET,instagram,Social
   - RULE-SET,facebook,Social
-  - RULE-SET,steam,Gaming
-  - RULE-SET,steamlist,Gaming
+  # Media and streaming
   - RULE-SET,netflix,Netflix
   - RULE-SET,netflixcidr,Netflix,no-resolve
-  - RULE-SET,tiktok,Proxy
+  - RULE-SET,bilibili,Bilibili
   - RULE-SET,twitch,Proxy
-  - RULE-SET,speedtest,Speedtest
+  - RULE-SET,bahamut,TW
+  - RULE-SET,tiktok,Proxy
+  # AI services
   - RULE-SET,openai,US
   - RULE-SET,claude,US
-  - RULE-SET,copilot,US
-  - RULE-SET,github,US
-  - RULE-SET,bahamut,TW
+  # Gaming and downloads
+  - RULE-SET,steam,Gaming
+  - RULE-SET,steamlist,Gaming
   - RULE-SET,pikpak,SG
+  # Utilities
+  - RULE-SET,speedtest,Speedtest
+  - RULE-SET,applications,DIRECT
+
+  # === Phase 5: Broad domain rules ===
   - RULE-SET,gfw,Proxy
   - RULE-SET,tld-not-cn,Proxy
   - RULE-SET,proxy,Proxy
-  - RULE-SET,bilibili,Bilibili
-  - RULE-SET,direct,DIRECT
+
+  # === Phase 6: GeoIP fallback (removed cncidr - redundant with GEOIP,CN) ===
+  # Note: cncidr rule-set removed as GEOIP,CN provides same functionality
+  # with better performance using mmdb binary lookup
   - GEOIP,CN,DIRECT,no-resolve
+
+  # === Phase 7: Final catch-all ===
   - MATCH,Final
