@@ -432,6 +432,7 @@ rules:
   - RULE-SET,apple,DIRECT
   - RULE-SET,youtube,YouTube
   - RULE-SET,google,Google
+  - RULE-SET,copilot,US
   - RULE-SET,onedrive,SG
   - RULE-SET,microsoft,Microsoft
   - RULE-SET,telegram,Telegram,no-resolve
@@ -447,7 +448,6 @@ rules:
   - RULE-SET,speedtest,Speedtest
   - RULE-SET,openai,US
   - RULE-SET,claude,US
-  - RULE-SET,copilot,US
   - RULE-SET,github,US
   - RULE-SET,bahamut,TW
   - RULE-SET,pikpak,SG
