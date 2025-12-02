@@ -107,14 +107,14 @@ function removeNodeByName(config, regExp) {
       if (!proxy || typeof proxy !== 'object' || !proxy.name) {
         return false;
       }
-      // 使用 test() 检测是否匹配（比 match() 更高效，因为只需要布尔结果）
-      const shouldRemove = regExp.test(proxy.name);
+      // 使用 test() 检测是否应保留（比 match() 更高效，因为只需要布尔结果）
+      const shouldKeep = !regExp.test(proxy.name);
       // 仅对保留的节点设置 UDP
       // 注：Clash 节点的 udp 字段决定是否允许 UDP 转发
-      if (!shouldRemove) {
+      if (shouldKeep) {
         proxy.udp = true;
       }
-      return !shouldRemove;
+      return shouldKeep;
     });
   }
 
@@ -124,7 +124,10 @@ function removeNodeByName(config, regExp) {
       if (group.proxies && Array.isArray(group.proxies)) {
         // 从每个组的 proxies 列表中移除匹配名称的引用
         // 使用 test() 代替 match() 提高性能
-        group.proxies = group.proxies.filter(name => !regExp.test(name));
+        // 添加类型检查以确保 name 是字符串
+        group.proxies = group.proxies.filter(name => 
+          typeof name === 'string' && !regExp.test(name)
+        );
       }
       return group;
     });
