@@ -25,7 +25,7 @@ const dnsConfig = {
   // 是否启用 IPv6 解析（如运营商不支持或网络环境复杂，可保持为 false）
   ipv6: true,
   // 是否优先使用 HTTP/3（部分 DoH 服务支持，若网络不稳定可保持 false）
-  "prefer-h3": false,
+  "prefer-h3": true,
   // 是否尊重路由规则进行分域名解析（开启后根据规则选择国内/国外 DNS）
   "respect-rules": true,
   // 是否使用系统 hosts 文件（关闭可避免与系统 hosts 冲突，由 Clash 统一管理）
@@ -81,6 +81,22 @@ function main(config) {
 
   // 覆盖原配置中的 DNS 配置（将全局 DNS 行为切换为上述策略）
   config["dns"] = dnsConfig;
+
+  // ===== TUN 模块增强设置 =====
+  // 说明：
+  // Clash 的 tun 功能可创建一个虚拟网卡，将系统/应用的流量强制导入 Clash，
+  // 实现更完整的透明代理能力。以下设置确保：
+  // 1. 若配置中尚未定义 tun，则初始化为空对象。
+  // 2. stack 设为 "mixed"：同时支持系统的 IPv4 / IPv6 与 TCP / UDP。
+  // 3. endpoint-independent-nat: 为 true 时允许在某些 NAT 网络环境中提高连接稳定性，
+  //    改善部分游戏与通讯协议的体验。
+  if (!config.tun) {
+    config.tun = {};
+  }
+  // 采用混合协议栈（与多数使用场景兼容度高）
+  config.tun.stack = "mixed";
+  // 启用独立端点 NAT 行为（对需要稳定连接的服务更友好）
+  config.tun["endpoint-independent-nat"] = true; // Add this
 
   // 排除名称中含有 "Premium" 的节点，并为保留的节点设置 udp = true
   // 说明：部分机场将「Premium」标注为特殊套餐或不可用节点，过滤可避免误用
