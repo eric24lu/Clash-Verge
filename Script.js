@@ -121,7 +121,7 @@ function removeNodeByName(config, regExp) {
         proxy.udp = true;
       }
     }
-    // 过滤掉名称匹配正则的节点（使用 test() 比 match() 更高效）
+    // 过滤掉名称匹配正则的节点
     config.proxies = proxies.filter(proxy => proxy.name && !regExp.test(proxy.name));
   }
 
@@ -130,7 +130,7 @@ function removeNodeByName(config, regExp) {
   if (Array.isArray(proxyGroups) && proxyGroups.length > 0) {
     for (const group of proxyGroups) {
       if (Array.isArray(group.proxies) && group.proxies.length > 0) {
-        // 从每个组的 proxies 列表中移除匹配名称的引用（使用 test() 比 match() 更高效）
+        // 从每个组的 proxies 列表中移除匹配名称的引用
         group.proxies = group.proxies.filter(name => name && !regExp.test(name));
       }
     }
