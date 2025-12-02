@@ -48,7 +48,8 @@ proxy-groups:
     type: select
     include-all: true
     exclude-type: direct
-    filter: "(?!.*Expire).*"
+    # Matches entire string that doesn't contain "Expire"
+    filter: "^(?!.*Expire).*$"
 
   - name: Proxy
     type: select
@@ -189,11 +190,6 @@ rule-providers:
     path: ./ruleset/tld-not-cn.yaml
 
   # IP CIDR behavior providers (efficient prefix tree lookup)
-  cncidr:
-    <<: *ipcidr-base
-    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/cncidr.txt"
-    path: ./ruleset/cncidr.yaml
-
   lancidr:
     <<: *ipcidr-base
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/lancidr.txt"
