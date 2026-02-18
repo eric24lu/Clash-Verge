@@ -2,3 +2,4 @@ payload:
   - DOMAIN-SUFFIX,formula1.com
   - DOMAIN,f1prodlive.akamaized.net
   - DOMAIN,api.multiviewer.dev
+  - DOMAIN,api.multiviewer.app
