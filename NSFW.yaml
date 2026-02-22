@@ -1,58 +1,57 @@
-# 视频类
-DOMAIN-SUFFIX,pornhub.com
-DOMAIN-SUFFIX,xvideos.com
-DOMAIN-SUFFIX,xnxx.com
-DOMAIN-SUFFIX,youporn.com
-DOMAIN-SUFFIX,redtube.com
-DOMAIN-SUFFIX,spankbang.com
+payload:
+  # 视频类
+  - DOMAIN-SUFFIX,pornhub.com
+  - DOMAIN-SUFFIX,xvideos.com
+  - DOMAIN-SUFFIX,xnxx.com
+  - DOMAIN-SUFFIX,youporn.com
+  - DOMAIN-SUFFIX,redtube.com
+  - DOMAIN-SUFFIX,spankbang.com
 
-# 图片 / 综合
-DOMAIN-SUFFIX,rule34.xxx
-DOMAIN-SUFFIX,gelbooru.com
-DOMAIN-SUFFIX,danbooru.donmai.us
-DOMAIN-SUFFIX,e-hentai.org
-DOMAIN-SUFFIX,exhentai.org
+  # 图片 / 综合
+  - DOMAIN-SUFFIX,rule34.xxx
+  - DOMAIN-SUFFIX,gelbooru.com
+  - DOMAIN-SUFFIX,danbooru.donmai.us
+  - DOMAIN-SUFFIX,e-hentai.org
+  - DOMAIN-SUFFIX,exhentai.org
 
-# 社区 / 社交
-DOMAIN-SUFFIX,onlyfans.com
-DOMAIN-SUFFIX,fansly.com
+  # 社区 / 社交
+  - DOMAIN-SUFFIX,onlyfans.com
+  - DOMAIN-SUFFIX,fansly.com
 
-# 日本站点
-DOMAIN-SUFFIX,dmm.co.jp
-DOMAIN-SUFFIX,dlsite.com
-DOMAIN-SUFFIX,javlibrary.com
-DOMAIN-SUFFIX,javdb.com
-DOMAIN-SUFFIX,javbus.com
-DOMAIN-SUFFIX,jav321.com
-DOMAIN-SUFFIX,javfinder.is
-DOMAIN-SUFFIX,javmodel.com
-DOMAIN-SUFFIX,javmenu.com
-DOMAIN-SUFFIX,jav.guru
-DOMAIN-SUFFIX,javhd.com
-DOMAIN-SUFFIX,javhd.today
-DOMAIN-SUFFIX,javhdporn.net
-DOMAIN-SUFFIX,javmost.com
-DOMAIN-SUFFIX,javfree.me
-DOMAIN-SUFFIX,javtorrent.re
-DOMAIN-SUFFIX,javstreams.com
-DOMAIN-SUFFIX,javtiful.com
-DOMAIN-SUFFIX,javseen.tv
-DOMAIN-SUFFIX,javquick.com
-DOMAIN-SUFFIX,javcdn.com
-DOMAIN-SUFFIX,javxxx.me
-DOMAIN-SUFFIX,javcc.com
-DOMAIN-SUFFIX,javstore.net
-DOMAIN-SUFFIX,s1s1s1.com
-DOMAIN-SUFFIX,ideapocket.com
-DOMAIN-SUFFIX,moodyz.com
-DOMAIN-SUFFIX,faleno.jp
-DOMAIN-SUFFIX,attackers.net
-DOMAIN-SUFFIX,softondemand.co.jp
+  # 日本站点
+  - DOMAIN-SUFFIX,dmm.co.jp
+  - DOMAIN-SUFFIX,dlsite.com
+  - DOMAIN-SUFFIX,javlibrary.com
+  - DOMAIN-SUFFIX,javdb.com
+  - DOMAIN-SUFFIX,javbus.com
+  - DOMAIN-SUFFIX,jav321.com
+  - DOMAIN-SUFFIX,javfinder.is
+  - DOMAIN-SUFFIX,javmodel.com
+  - DOMAIN-SUFFIX,javmenu.com
+  - DOMAIN-SUFFIX,jav.guru
+  - DOMAIN-SUFFIX,javhd.com
+  - DOMAIN-SUFFIX,javhd.today
+  - DOMAIN-SUFFIX,javhdporn.net
+  - DOMAIN-SUFFIX,javmost.com
+  - DOMAIN-SUFFIX,javfree.me
+  - DOMAIN-SUFFIX,javtorrent.re
+  - DOMAIN-SUFFIX,javstreams.com
+  - DOMAIN-SUFFIX,javtiful.com
+  - DOMAIN-SUFFIX,javseen.tv
+  - DOMAIN-SUFFIX,javquick.com
+  - DOMAIN-SUFFIX,javcdn.com
+  - DOMAIN-SUFFIX,javxxx.me
+  - DOMAIN-SUFFIX,javcc.com
+  - DOMAIN-SUFFIX,javstore.net
+  - DOMAIN-SUFFIX,s1s1s1.com
+  - DOMAIN-SUFFIX,ideapocket.com
+  - DOMAIN-SUFFIX,moodyz.com
+  - DOMAIN-SUFFIX,faleno.jp
+  - DOMAIN-SUFFIX,attackers.net
+  - DOMAIN-SUFFIX,softondemand.co.jp
 
-# CDN / Media
-DOMAIN-SUFFIX,phncdn.com
-DOMAIN-SUFFIX,pornhubpremium.com
-DOMAIN-SUFFIX,xvideos-cdn.com
-DOMAIN-SUFFIX,onlyfanscdn.com
-DOMAIN-SUFFIX,redditmedia.com
-DOMAIN-SUFFIX,reddituploads.com
+  # CDN / Media
+  - DOMAIN-SUFFIX,phncdn.com
+  - DOMAIN-SUFFIX,pornhubpremium.com
+  - DOMAIN-SUFFIX,xvideos-cdn.com
+  - DOMAIN-SUFFIX,onlyfanscdn.com
