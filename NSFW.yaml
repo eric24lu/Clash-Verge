@@ -19,11 +19,16 @@ payload:
   - DOMAIN-SUFFIX,fansly.com
 
   # 日本站点
+  - DOMAIN-KEYWORD,javdb
+  - DOMAIN-SUFFIX,jdbstatic.com
+  - DOMAIN-SUFFIX,jdbimgs.com
+  - DOMAIN-SUFFIX,jdbcdn.com
+  - DOMAIN-SUFFIX,javdb.live
+  - DOMAIN-SUFFIX,javdb.me
+  - DOMAIN-SUFFIX,javdb.work
   - DOMAIN-SUFFIX,dmm.co.jp
   - DOMAIN-SUFFIX,dlsite.com
   - DOMAIN-SUFFIX,javlibrary.com
-  - DOMAIN-KEYWORD,javdb.com
-  - DOMAIN-SUFFIX,jdbstatic.com
   - DOMAIN-SUFFIX,javbus.com
   - DOMAIN-SUFFIX,jav321.com
   - DOMAIN-SUFFIX,javfinder.is
@@ -50,7 +55,6 @@ payload:
   - DOMAIN-SUFFIX,faleno.jp
   - DOMAIN-SUFFIX,attackers.net
   - DOMAIN-SUFFIX,softondemand.co.jp
-
   # CDN / Media
   - DOMAIN-SUFFIX,phncdn.com
   - DOMAIN-SUFFIX,pornhubpremium.com
