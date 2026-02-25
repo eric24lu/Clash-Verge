@@ -57,6 +57,7 @@ payload:
   - DOMAIN-SUFFIX,faleno.jp
   - DOMAIN-SUFFIX,attackers.net
   - DOMAIN-SUFFIX,softondemand.co.jp
+  - DOMAIN-SUFFIX,missav.app
   - DOMAIN-SUFFIX,missav.ws
   - DOMAIN-SUFFIX,missav.ai
   - DOMAIN-SUFFIX,missav.live
