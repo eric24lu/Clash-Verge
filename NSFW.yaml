@@ -57,6 +57,14 @@ payload:
   - DOMAIN-SUFFIX,faleno.jp
   - DOMAIN-SUFFIX,attackers.net
   - DOMAIN-SUFFIX,softondemand.co.jp
+  - DOMAIN-SUFFIX,missav.ws
+  - DOMAIN-SUFFIX,missav.ai
+  - DOMAIN-SUFFIX,missav.live
+  - DOMAIN-SUFFIX,hanime1.me
+  - DOMAIN-SUFFIX,hanimeone.me
+  - DOMAIN-SUFFIX,hanime1.com
+  - DOMAIN-SUFFIX,javchu.com
+  - DOMAIN-SUFFIX,av.jkforum.net
   # CDN / Media
   - DOMAIN-SUFFIX,phncdn.com
   - DOMAIN-SUFFIX,pornhubpremium.com
