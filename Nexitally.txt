@@ -1,5 +1,9 @@
 payload:
+  - 'durable0762.com'
+  - 'delirium9599.com'
   - 'wrecking7857.com'
+  - 'carrousel6917.com'
+  - 'simmering3378.com'
   - 'nxonearth.com'
   - 'naixinternet.com'
   - 'naiixi.com'
