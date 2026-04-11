@@ -1,4 +1,5 @@
 payload:
+  - 'wrecking7857.com'
   - 'nxonearth.com'
   - 'naixinternet.com'
   - 'naiixi.com'
