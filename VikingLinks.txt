@@ -1,0 +1,3 @@
+payload:
+  - '+.viking-links.com'
+  - '+.feeds.viking-links.tech'
