@@ -3,3 +3,4 @@ payload:
   - DOMAIN-SUFFIX,formula1.com
   - DOMAIN-SUFFIX,multiviewer.dev
   - DOMAIN-SUFFIX,multiviewer.app
+  - PROCESS-NAME,MultiViewer.exe
