@@ -1,5 +1,6 @@
 payload:
   - '+.kfzzxcx.com'
+  - '+.iqsjp.com'
   - '+.destitute2725.com'
   - '+.prolonged3729.com'
   - '+.durable0762.com'
