@@ -22,6 +22,7 @@ payload:
   - DOMAIN-WILDCARD,jav?*.*
   - DOMAIN-WILDCARD,?*jav.*
   - DOMAIN-WILDCARD,jdb?*.*
+  - DOMAIN-WILDCARD,*.jdb?*.*
   - DOMAIN-KEYWORD,jable
   - DOMAIN-SUFFIX,tp.spfcas.com
   - DOMAIN-SUFFIX,jdforrepam.com
